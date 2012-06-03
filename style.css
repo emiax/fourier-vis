@@ -1,0 +1,20 @@
+@import url(http://reset5.googlecode.com/hg/reset.min.css);
+@import url(http://fonts.googleapis.com/css?family=Asap:400,400italic,700,700italic);
+
+body, html {
+	padding : 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	font-family: 'Asap';
+	color: #ddd;
+}
+
+h2, canvas {
+	margin: 10px;
+}
+
+
+.canvasContainer {
+	float: left;
+}

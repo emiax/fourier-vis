@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Convolution and Fourier transform</title>
+
+<link href="style.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/sylvester.js"></script>
+<script type="text/javascript" src="src/fourierVis.js"></script>
+<script type="text/javascript" src="src/canvas.js"></script>
+
+<script type="text/javascript">
+
+function init() {
+
+	var xCanvas, yCanvas, absHCanvas, argHCanvas, hCanvas;
+
+	function updateFromInput() {
+		yCanvas.update(FourierVis.conv(xCanvas.graph, hCanvas.graph));
+	}
+
+	function updateFromFreqResponse(a) {
+		hCanvas.update(FourierVis.ifft(FourierVis.toCartesian([freqHCanvas.graph, phaseHCanvas.graph])));
+		yCanvas.update(FourierVis.conv(xCanvas.graph, hCanvas.graph));
+	}
+
+	function updateFromPhaseResponse(a) {
+		hCanvas.update(FourierVis.ifft(FourierVis.toCartesian([freqHCanvas.graph, phaseHCanvas.graph])));
+		yCanvas.update(FourierVis.conv(xCanvas.graph, hCanvas.graph));
+	}
+	function updateFromImpulseResponse(a) {
+		var trans = FourierVis.toPolar(FourierVis.fft(hCanvas.graph));
+		freqHCanvas.update(trans[0]);
+		phaseHCanvas.update(trans[1]);
+		yCanvas.update(FourierVis.conv(xCanvas.graph, hCanvas.graph));
+	}
+
+	xCanvas = new FourierVis.Canvas($('#xCanvas'), updateFromInput);
+	yCanvas = new FourierVis.Canvas($('#yCanvas'));
+
+	freqHCanvas = new FourierVis.Canvas($('#freqHCanvas'), updateFromFreqResponse);
+	phaseHCanvas = new FourierVis.Canvas($('#phaseHCanvas'), updateFromPhaseResponse);
+	hCanvas = new FourierVis.Canvas($('#hCanvas'), updateFromImpulseResponse);
+}
+
+
+$(document).ready(function() {
+	init();
+});
+
+</script>
+
+<!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<body style="background: #333;">
+
+<div class="canvasContainer">
+<h2>Input x(t)</h2>
+<canvas width="400" height="225" style="border: 1px solid #edc;" id="xCanvas"></canvas>
+</div class="canvasContainer">
+<div>
+<h2>Frequency |H(w)|</h2>
+<canvas width="400" height="225" style="border: 1px solid #edc;" id="freqHCanvas"></canvas>
+</div>
+<div class="canvasContainer">
+<h2>Phase arg(H(w))</h2>
+<canvas width="400" height="225" style="border: 1px solid #edc;" id="phaseHCanvas"></canvas>
+</div>
+
+<div class="canvasContainer">
+<h2>Impule response h(t)</h2>
+<canvas width="400" height="225" style="border: 1px solid #edc;" id="hCanvas"></canvas>
+</div><div class="canvasContainer">
+<h2>Output y(t)</h2>
+<canvas width="400" height="225" style="border: 1px solid #edc;" id="yCanvas"></canvas>
+</div>
+
+
+</body>
+</html>
